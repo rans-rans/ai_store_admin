@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'homepage.dart';
+import 'config/constants/colors.dart';
+import 'src/view/screens/home_controller_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,8 +12,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Homepage(),
+    return MaterialApp(
+      home: const HomeControllerPage(),
+      theme: lightTheme,
+      darkTheme: darkTheme,
     );
   }
 }
