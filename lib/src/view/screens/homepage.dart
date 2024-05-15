@@ -4,6 +4,7 @@ import '../widgets/homepage/best_selling_products.dart';
 import '../widgets/homepage/home_stat_chart.dart';
 import '../widgets/homepage/best_products_list.dart';
 import '../widgets/homepage/today_info_card.dart';
+import 'add_edit_product_screen.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -30,7 +31,12 @@ class Homepage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //TODO goto add-product page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddEditProductScreen(),
+            ),
+          );
         },
         backgroundColor: Theme.of(context).primaryColor,
         tooltip: "Add product",
