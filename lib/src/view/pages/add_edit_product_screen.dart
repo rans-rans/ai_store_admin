@@ -199,6 +199,7 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                   ),
                 ),
                 const SizedBox(height: 25),
+                //you add variants over here
                 Column(
                   children: [
                     const Text('Add variants'),

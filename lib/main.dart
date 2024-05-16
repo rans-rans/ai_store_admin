@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'config/constants/colors.dart';
-import 'src/view/screens/home_controller_page.dart';
+import 'src/view/pages/home_controller_page.dart';
 
 void main() {
   runApp(const MyApp());
