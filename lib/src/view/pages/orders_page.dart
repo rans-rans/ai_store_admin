@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../widgets/orders_page/small_category_list.dart';
 import '../widgets/orders_page/orders_list.dart';
 
-class ProductsPage extends StatefulWidget {
-  const ProductsPage({super.key});
+class OrdersPage extends StatefulWidget {
+  const OrdersPage({super.key});
 
   @override
-  State<ProductsPage> createState() => _ProductsPageState();
+  State<OrdersPage> createState() => _OrdersPageState();
 }
 
-class _ProductsPageState extends State<ProductsPage> {
+class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     return const Padding(
