@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'homepage.dart';
 import 'orders_page.dart';
+import 'statistics_page.dart';
 
 class HomeControllerPage extends StatefulWidget {
   const HomeControllerPage({super.key});
@@ -16,14 +17,14 @@ class _HomeControllerPageState extends State<HomeControllerPage> {
   final bottomNavPages = [
     const Homepage(),
     const ProductsPage(),
-    const Center(child: Text('Statistics')),
-    const Center(child: Text('Profile')),
+    const Center(child: Text('Products')),
+    const StatisticsPage(),
   ];
   final bottomNavDestinations = const [
     NavigationDestination(icon: Icon(Icons.home), label: "Home"),
     NavigationDestination(icon: Icon(Icons.shopping_bag), label: "Orders"),
+    NavigationDestination(icon: Icon(Icons.inventory), label: "Products"),
     NavigationDestination(icon: Icon(Icons.bar_chart), label: "Stats"),
-    NavigationDestination(icon: Icon(Icons.person), label: "Profile"),
   ];
 
   @override

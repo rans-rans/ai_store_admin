@@ -17,7 +17,7 @@ class OrdersList extends StatelessWidget {
         itemBuilder: (context, index) {
           return ListTile(
             leading: CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Colors.grey.shade300,
               child: const Icon(Icons.person_2),
             ),
             //TODO customer name over here
