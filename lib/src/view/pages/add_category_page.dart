@@ -1,4 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/brand_provider.dart';
+import '../providers/category_provider.dart';
+import '../widgets/global/selected_image_button.dart';
 
 class AddCategoryPage extends StatefulWidget {
   const AddCategoryPage({super.key});
@@ -11,68 +18,163 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   final nameCtrl = TextEditingController();
   final imgCtrl = TextEditingController();
 
+  String? imageFile;
+
   bool isBrand = true;
+
+  bool validateForm() {
+    if (imageFile == null || nameCtrl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Check name or pick image")),
+      );
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add New"),
         actions: [
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text("Done"),
-          )
+          OutlinedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey.shade100,
+            ),
+            onPressed: () async {
+              if (!validateForm()) return;
+              final name = nameCtrl.text;
+              final image = File(imageFile!);
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (_) => AlertDialog(
+                  backgroundColor: Colors.white,
+                  content: SizedBox(
+                    height: screenSize.height * 0.55,
+                    width: screenSize.width * 0.9,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        Text("Loading"),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+              bool success = false;
+              try {
+                if (isBrand) {
+                  success = await context.read<BrandProvider>().addBrand(
+                        brandName: name,
+                        imageFile: image,
+                      );
+                } else {
+                  success = await context.read<CategoryProvider>().addCategory(
+                        categoryName: name,
+                        imageFile: image,
+                      );
+                }
+              } finally {
+                if (mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text(success
+                            ? "Action completed successfully"
+                            : "Action  failed. Try again")),
+                  );
+                  if (success) {
+                    Navigator.pop(context);
+                  }
+                }
+              }
+            },
+            child: const Text(
+              "Done",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          ),
         ],
       ),
-      body: Column(
-        children: [
-          Row(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
             children: [
               Row(
                 children: [
-                  Radio(
-                    value: true,
-                    fillColor:
-                        MaterialStatePropertyAll(Theme.of(context).primaryColor),
-                    groupValue: isBrand,
-                    onChanged: (value) {
-                      isBrand = value ?? true;
-                      setState(() {});
-                    },
+                  Row(
+                    children: [
+                      Radio(
+                        value: true,
+                        fillColor: const MaterialStatePropertyAll(
+                          Colors.black,
+                        ),
+                        groupValue: isBrand,
+                        onChanged: (value) {
+                          isBrand = value ?? true;
+                          setState(() {});
+                        },
+                      ),
+                      const Text("Brand")
+                    ],
                   ),
-                  const Text("Brand")
+                  Row(
+                    children: [
+                      Radio(
+                        value: false,
+                        fillColor: const MaterialStatePropertyAll(
+                          Colors.black,
+                        ),
+                        groupValue: isBrand,
+                        onChanged: (value) {
+                          isBrand = value ?? true;
+                          setState(() {});
+                        },
+                      ),
+                      const Text("Category")
+                    ],
+                  ),
                 ],
               ),
-              Row(
-                children: [
-                  Radio(
-                    value: false,
-                    fillColor:
-                        MaterialStatePropertyAll(Theme.of(context).primaryColor),
-                    groupValue: isBrand,
-                    onChanged: (value) {
-                      isBrand = value ?? true;
-                      setState(() {});
-                    },
+              TextField(
+                controller: nameCtrl,
+                cursorColor: Theme.of(context).primaryColor,
+                decoration: const InputDecoration(
+                  labelText: "Name",
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
                   ),
-                  const Text("Category")
-                ],
+                ),
+              ),
+              const SizedBox(height: 25),
+              if (imageFile != null)
+                SizedBox(
+                  child: Image.file(
+                    File(imageFile!),
+                    height: screenSize.height * 0.45,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              SelectImageButton(
+                onImageSelected: (image) {
+                  if (image != null && mounted) {
+                    setState(() {
+                      imageFile = image;
+                    });
+                  }
+                },
               ),
             ],
           ),
-          TextField(
-            controller: nameCtrl,
-            decoration: const InputDecoration(labelText: "Name"),
-          ),
-          //TODO  selected image comes here
-          const SizedBox(),
-          ElevatedButton(
-            onPressed: () {
-              //TODO  image-context.select function here
-            },
-            child: const Text("Select image"),
-          )
-        ],
+        ),
       ),
     );
   }

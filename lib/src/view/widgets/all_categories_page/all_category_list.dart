@@ -1,4 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/category_provider.dart';
 
 class AllCategoryList extends StatelessWidget {
   const AllCategoryList({
@@ -7,14 +11,24 @@ class AllCategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 9,
-      //TODO list of brands here
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text("Category  ${index + 1}"),
-        );
-      },
+    return RefreshIndicator(
+      onRefresh: () => context.read<CategoryProvider>().fetchCategories(),
+      child: Consumer<CategoryProvider>(
+        builder: (context, categoryProvider, child) {
+          return ListView.builder(
+            itemCount: categoryProvider.categories.length,
+            itemBuilder: (context, index) {
+              final brand = categoryProvider.categories[index];
+              return ListTile(
+                title: Text(brand.name),
+                leading: CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(brand.imgUrl),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
