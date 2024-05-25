@@ -24,20 +24,23 @@ class _VariantInputState extends State<VariantInput> {
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: SizedBox(
         height: 150,
-        child: Column(
-          children: [
-            TextField(
-              controller: variantCtrl,
-              decoration: const InputDecoration(hintText: "Enter a variant"),
-            ),
-            ElevatedButton(
-              child: const Text('DONE'),
-              onPressed: () {
-                if (variantCtrl.text.isEmpty) return Navigator.pop(context);
-                return Navigator.pop(context, variantCtrl.text);
-              },
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: variantCtrl,
+                decoration: const InputDecoration(hintText: "Enter a variant"),
+              ),
+              ElevatedButton(
+                child: const Text('DONE'),
+                onPressed: () {
+                  if (variantCtrl.text.isEmpty) return Navigator.pop(context);
+                  return Navigator.pop(context, variantCtrl.text);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

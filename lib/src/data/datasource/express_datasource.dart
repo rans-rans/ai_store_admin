@@ -18,7 +18,6 @@ class ExpressDatasource {
       final imageUrl = await firebaseDatasource.uploadImage(imageFile, 'brands');
       final request = await NetworkRequest.post(
         url: "$baseUrl/admin/add-brand",
-        headers: {'content-type': 'application/json'},
         body: {
           "brand_name": brandName,
           "brand_img": imageUrl,
@@ -42,7 +41,6 @@ class ExpressDatasource {
       final imageUrl = await firebaseDatasource.uploadImage(imageFile, 'categories');
       final request = await NetworkRequest.post(
         url: "$baseUrl/admin/add-category",
-        // headers: {'content-type': 'application/json'},
         body: {
           "category_name": categoryName,
           "category_img": imageUrl,
@@ -52,6 +50,35 @@ class ExpressDatasource {
       return {
         'category_id': response['category_id'],
         'image_url': imageUrl,
+      };
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> addProduct(Map<String, dynamic> productData) async {
+    try {
+      final productId = productData['id'] as int;
+      final imagesPath = productData['images_path'] as List<String>;
+
+      final imageUrls = await firebaseDatasource.uploadImageList(
+        imagesPath: imagesPath,
+        destination: 'products/$productId',
+      );
+
+      final requestData = productData;
+      requestData.remove('images_path');
+      requestData['images'] = json.encode(imageUrls);
+
+      final request = await NetworkRequest.post(
+          url: "$baseUrl/admin/add-product",
+          body: json.encode(requestData),
+          headers: {
+            'content-type': 'application/json',
+          });
+      return {
+        'data': request,
+        'images': imageUrls,
       };
     } catch (e) {
       rethrow;

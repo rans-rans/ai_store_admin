@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:ai_store_admin/src/domain/entities/product.dart';
 
 import '../../domain/entities/brand.dart';
 import '../../domain/entities/category.dart';
 import '../../domain/repositories/category_repository.dart';
+import '../../domain/repositories/products_repository.dart';
 import '../datasource/express_datasource.dart';
 
-class ExpressRepo implements CategoryRepo {
+class ExpressRepo implements CategoryRepo, ProductsRepository {
   final ExpressDatasource expressDatasource;
 
   ExpressRepo({
@@ -49,6 +53,28 @@ class ExpressRepo implements CategoryRepo {
         name: categoryName,
       );
       return category;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Product> addProduct({required Map<String, dynamic> productData}) async {
+    try {
+      final response = await expressDatasource.addProduct(productData);
+      final product = Product(
+        id: productData['id'],
+        name: productData['name'],
+        description: productData['description'],
+        categoryId: productData['category_id'],
+        brandId: productData['brand_id'],
+        quantity: productData['quantity'],
+        price: productData['price'],
+        images: response['images'],
+        variants: json.decode(productData['variants']),
+        discount: productData['discount'],
+      );
+      return product;
     } catch (e) {
       rethrow;
     }

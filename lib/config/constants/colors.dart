@@ -10,11 +10,11 @@ final lightTheme = ThemeData.light().copyWith(
   inputDecorationTheme: InputDecorationTheme(
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(inputBorderRadius),
-      borderSide: const BorderSide(color: primaryColor),
+      borderSide: const BorderSide(color: Colors.black),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(inputBorderRadius),
-      borderSide: const BorderSide(color: primaryColor),
+      borderSide: const BorderSide(color: Colors.black),
     ),
   ),
   colorScheme: const ColorScheme.light(secondary: secondaryColor),
@@ -48,11 +48,11 @@ final darkTheme = ThemeData.dark().copyWith(
   inputDecorationTheme: InputDecorationTheme(
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(inputBorderRadius),
-      borderSide: const BorderSide(color: primaryColor),
+      borderSide: const BorderSide(color: Colors.white),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(inputBorderRadius),
-      borderSide: const BorderSide(color: primaryColor),
+      borderSide: const BorderSide(color: Colors.white),
     ),
   ),
   textButtonTheme: TextButtonThemeData(

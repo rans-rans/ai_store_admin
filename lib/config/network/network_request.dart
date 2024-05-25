@@ -5,7 +5,7 @@ import 'network_response.dart';
 class NetworkRequest {
   static Future<NetworkResponse> post({
     required String url,
-    required Map<String, dynamic> body,
+    required Object? body,
     Map<String, String>? headers,
   }) async {
     try {

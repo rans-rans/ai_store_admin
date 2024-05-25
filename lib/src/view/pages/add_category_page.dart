@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/brand_provider.dart';
 import '../providers/category_provider.dart';
+import '../widgets/global/loading_dialog.dart';
 import '../widgets/global/selected_image_button.dart';
 
 class AddCategoryPage extends StatefulWidget {
@@ -50,20 +51,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
               showDialog(
                 barrierDismissible: false,
                 context: context,
-                builder: (_) => AlertDialog(
-                  backgroundColor: Colors.white,
-                  content: SizedBox(
-                    height: screenSize.height * 0.55,
-                    width: screenSize.width * 0.9,
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(),
-                        Text("Loading"),
-                      ],
-                    ),
-                  ),
-                ),
+                builder: (_) => const LoadingDialog(),
               );
               bool success = false;
               try {

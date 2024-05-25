@@ -6,6 +6,7 @@ import 'src/data/datasource/firebase_datasource.dart';
 import 'src/data/repository/express_repo.dart';
 import 'src/view/providers/brand_provider.dart';
 import 'src/view/providers/category_provider.dart';
+import 'src/view/providers/products_provider.dart';
 
 class Injector extends StatelessWidget {
   final Widget child;
@@ -19,15 +20,18 @@ class Injector extends StatelessWidget {
         ExpressDatasource(firebaseDatasource: firebaseDatasource);
 
     //repositories
-    final categoryRepo = ExpressRepo(expressDatasource: expressDatasource);
+    final expressRepo = ExpressRepo(expressDatasource: expressDatasource);
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => BrandProvider(brandRepo: categoryRepo),
+          create: (_) => BrandProvider(brandRepo: expressRepo),
         ),
         ChangeNotifierProvider(
-          create: (_) => CategoryProvider(categoryRepo: categoryRepo),
+          create: (_) => CategoryProvider(categoryRepo: expressRepo),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ProductsProvider(productsRepository: expressRepo),
         ),
       ],
       child: child,
